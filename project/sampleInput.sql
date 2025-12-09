@@ -1,4 +1,5 @@
 -- sample input
+
 -- Categories
 INSERT INTO Categories (category_name) VALUES
 ('Politics'),
