@@ -1,0 +1,406 @@
+Minimum Requirements for Project:
+
+1. Your database must be relational, otherwise you will not receive any marks
+
+2. Implement create, insert, retrieve/display, update, delete and search features
+
+3. Must implement basic Registration and Login features
+
+4. At least implement basic UI design(no need for css)
+
+5. Must use php and html5
+
+#  **1. CATEGORIES**
+
+### **Strong / Weak:**
+
+✔ **Strong entity**
+
+### **Attributes:**
+
+* category_id (simple, key)
+* category_name (simple)
+
+### **Primary Key:**
+
+* **category_id**
+
+### **Foreign Keys:**
+
+* None (but referenced by Article)
+
+### **Relationship Types:**
+
+* **Categories — Article** : 1-to-Many
+
+### **Cardinality:**
+
+* One category → many articles
+* One article → one category
+
+### **Participation:**
+
+* Category: **Partial** (a category can exist without an article)
+* Article: **Total** (every article must have a category)
+
+---
+
+#  **2. ADMIN**
+
+### **Strong / Weak:**
+
+✔ **Strong entity**
+
+### **Attributes:**
+
+* admin_id (simple, key)
+* admin_name (simple)
+* email (simple)
+* password_hash (simple)
+
+### **Primary Key:**
+
+* **admin_id**
+
+### **Foreign Keys:**
+
+* None (but referenced by Login_Activity)
+
+### **Relationship Types:**
+
+* Admin — Login_Activity : 1-to-Many
+
+### **Cardinality:**
+
+* Admin → many login entries
+* Login entry → one admin (if this row belongs to admin)
+
+### **Participation:**
+
+* Admin: Partial
+* Login_Activity: Partial (only one of admin/journalist/reader must be used)
+
+---
+
+#  **3. JOURNALISTS**
+
+### **Strong / Weak:**
+
+✔ **Strong**
+
+### **Attributes:**
+
+* journalist_id (simple, key)
+* journalist_name (simple)
+* email (simple)
+* bio (simple)
+
+### **Primary Key:**
+
+* journalist_id
+
+### **Foreign Keys:**
+
+* None (but referenced by Article, Feedback, Login_Activity)
+
+### **Relationship Types:**
+
+* Journalist — Article (1-to-Many)
+* Journalist — Feedback (1-to-Many)
+* Journalist — Login_Activity (1-to-Many)
+
+### **Cardinality:**
+
+* Journalist writes many articles
+* Article written by one journalist
+
+### **Participation:**
+
+* Journalist: Partial
+* Article: Total
+
+---
+
+#  **4. READERS**
+
+### **Strong / Weak:**
+
+✔ **Strong**
+
+### **Attributes:**
+
+* reader_id (simple, key)
+* reader_name (simple)
+* email (simple)
+
+### **Primary Key:**
+
+* reader_id
+
+### **Foreign Keys:**
+
+* None (but referenced in Comment, Share, Feedback, Bookmarks, Login_Activity)
+
+### **Relationship Types:**
+
+* Reader — Comment (1-to-Many)
+* Reader — Share (1-to-Many)
+* Reader — Bookmarks (1-to-Many)
+* Reader — Feedback (1-to-Many)
+* Reader — Login_Activity (1-to-Many)
+
+### **Cardinality:**
+
+* One reader → many interactions
+* Each interaction → 1 reader
+
+### **Participation:**
+
+* Reader: Partial
+* All related tables: Total
+
+---
+
+#  **5. ARTICLE**
+
+### **Strong / Weak:**
+
+✔ **Strong**
+
+### **Attributes:**
+
+* article_id (simple, key)
+* title (simple)
+* content (simple)
+* publish_date (simple)
+* journalist_id (simple, FK)
+* category_id (simple, FK)
+
+### **Primary Key:**
+
+* article_id
+
+### **Foreign Keys:**
+
+* journalist_id → Journalists
+* category_id → Categories
+
+### **Relationship Types:**
+
+* Article — Category (Many-to-1)
+* Article — Journalist (Many-to-1)
+* Article — Comment (1-to-Many)
+* Article — Share (1-to-Many)
+* Article — Bookmarks (1-to-Many)
+
+### **Cardinality:**
+
+* Article belongs to 1 category → category has many articles
+* Article written by 1 journalist → journalist writes many articles
+
+### **Participation:**
+
+* Article: Total (must have journalist & category)
+* Category/Journalist: Partial
+
+---
+
+#  **6. COMMENT**
+
+### **Strong / Weak:**
+
+✔ **Weak?**
+**No. Comment is strong because it has its own PK.**
+
+### **Attributes:**
+
+* comment_id (simple, key)
+* reader_id (FK)
+* article_id (FK)
+* comment_text (simple)
+* comment_date (simple)
+
+### **Primary Key:**
+
+* comment_id
+
+### **Foreign Keys:**
+
+* reader_id → Readers
+* article_id → Article
+
+### **Relationship Types:**
+
+* Reader — Comment (1-to-Many)
+* Article — Comment (1-to-Many)
+
+### **Cardinality:**
+
+* Reader posts many comments
+* Article has many comments
+
+### **Participation:**
+
+* Comment: **Total** (requires reader & article)
+* Reader/Article: Partial
+
+---
+
+#  **7. SHARE**
+
+### **Strong / Weak:**
+
+✔ **Strong**
+
+### **Attributes:**
+
+* share_id (simple, key)
+* reader_id (FK)
+* article_id (FK)
+* share_date (simple)
+
+### **Primary Key:**
+
+* share_id
+
+### **Foreign Keys:**
+
+* reader_id → Readers
+* article_id → Article
+
+### **Relationship Types:**
+
+* Reader — Share (1-to-Many)
+* Article — Share (1-to-Many)
+
+### **Cardinality:**
+
+* Reader can share many articles
+* Article can be shared many times
+
+### **Participation:**
+
+* Share: Total
+* Reader/Article: Partial
+
+---
+
+#  **8. BOOKMARKS**
+
+### **Strong / Weak:**
+
+✔ **Strong**
+
+### **Attributes:**
+
+* bookmark_id (simple, key)
+* reader_id (FK)
+* article_id (FK)
+* bookmark_date (simple)
+
+### **Primary Key:**
+
+* bookmark_id
+
+### **Foreign Keys:**
+
+* reader_id → Readers
+* article_id → Article
+
+### **Relationship Types:**
+
+* Reader — Bookmarks (1-to-Many)
+* Article — Bookmarks (1-to-Many)
+
+### **Cardinality:**
+
+* Reader can bookmark many articles
+* Article can be bookmarked many times
+
+### **Participation:**
+
+* Bookmarks: Total
+* Readers/Articles: Partial
+
+---
+
+#  **9. FEEDBACK**
+
+### **Strong / Weak:**
+
+✔ **Strong**
+
+### **Attributes:**
+
+* feedback_id (simple, key)
+* reader_id (FK)
+* journalist_id (FK)
+* feedback_text (simple)
+* feedback_date (simple)
+
+### **Primary Key:**
+
+* feedback_id
+
+### **Foreign Keys:**
+
+* reader_id → Readers
+* journalist_id → Journalists
+
+### **Relationship Types:**
+
+* Reader — Feedback (1-to-Many)
+* Journalist — Feedback (1-to-Many)
+
+### **Cardinality:**
+
+* Reader gives feedback to many journalists
+* Journalist receives feedback from many readers
+
+### **Participation:**
+
+* Feedback: Total
+* Reader/Journalist: Partial
+
+---
+
+#  **10. LOGIN_ACTIVITY**
+
+### **Strong / Weak:**
+
+✔ **Strong** (has its own PK)
+
+### **Attributes:**
+
+* login_id (simple, key)
+* admin_id (FK, nullable)
+* journalist_id (FK, nullable)
+* reader_id (FK, nullable)
+* login_time (simple)
+
+### **Primary Key:**
+
+* login_id
+
+### **Foreign Keys:**
+
+* admin_id → Admin
+* journalist_id → Journalists
+* reader_id → Readers
+
+### **Relationship Types:**
+
+* Admin — Login_Activity (1-to-Many)
+* Journalist — Login_Activity (1-to-Many)
+* Reader — Login_Activity (1-to-Many)
+
+### **Cardinality:**
+
+* Each actor can have many login records
+* Each login record belongs to exactly one actor type
+
+### **Participation:**
+
+* Login_Activity: Partial
+* Actor entities: Partial
+
